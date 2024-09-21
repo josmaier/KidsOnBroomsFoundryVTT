@@ -1,13 +1,21 @@
 name: Release Workflow
-
+#I hate this, why does it not work, what is going on
 on:
-  push:
-    tags:
-      - 'v*.*.*'  # Triggers on version tags like v1.0.0
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version for the release (e.g., v1.0.0)'
+        required: true
+        default: 'v1.0.0'
 
 jobs:
   release:
     runs-on: ubuntu-latest
+
+    # Set up a global environment variable to hold the version
+    env:
+      VERSION: ${{ github.ref_name != '' && github.ref_type == 'tag' && github.ref_name || github.event.inputs.version }}
+
     steps:
     # Checkout the repository
     - name: Checkout repository
@@ -19,12 +27,12 @@ jobs:
       with:
         node-version: '16'
 
-    - name: Install dependencies
-      run: npm install
+    # Step 3: Compile SCSS and create ZIP using Gulp
+    - name: Build and Create ZIP
+      run: npm run gulp build
 
-    # Compile SCSS files
-    - name: Compile SCSS
-      run: npm run build:scss  # Modify this according to your build command
+    - name: Combine ref_name and VERSION
+      run: echo "COMBINED_VERSION=${{ github.ref_name }}-${{ env.VERSION }}" >> $GITHUB_ENV
 
     # Create GitHub release
     - name: Create GitHub Release
@@ -33,37 +41,44 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ github.ref_name }}
-        release_name: "Release ${{ github.ref_name }}"
+        tag_name: ${{ env.COMBINED_VERSION }}  # Use the version from the tag
+        release_name: "Release ${{ env.COMBINED_VERSION }}"
         draft: false
         prerelease: false
         files: |
-          path/to/your/compiled/css/files
-
+          kids-on-brooms.zip
+    
     # Get the release download link from the release response
     - name: Get Release Download URL
-      run: echo "Release URL: ${{ steps.create_release.outputs.upload_url }}"
-    
+      run: | 
+        echo "Release URL: ${{ steps.create_release.outputs.upload_url }}"
+      
     # Update a file (e.g., update a manifest or version file)
     - name: Update manifest file
       run: |
-        sed -i 's/"download":.*/"download": "${{ steps.create_release.outputs.html_url }}"/' path/to/manifest.json
+        sed -i 's/"download":.*/"download": "${{ steps.create_release.outputs.html_url }}"/' system.json
         git config --global user.name 'GitHub Actions'
         git config --global user.email 'actions@github.com'
-        git add path/to/manifest.json
-        git commit -m "Update manifest with release URL"
+        git add system.json
+        git commit -m "Update system.json with release URL"
         git push origin main  # Push the change to the main branch
     
     # Publish release to Foundry API
     - name: Publish to Foundry API
       run: |
-        curl -X POST https://foundryvtt.com/api/packages/release \
+        curl -X POST https://api.foundryvtt.com/_api/packages/release_version/ \
         -H "Authorization: Bearer ${{ secrets.FOUNDRY_API_KEY }}" \
         -H "Content-Type: application/json" \
         -d '{
-          "type": "module",
-          "package": {
-            "name": "your-package-name",
-            "manifest": "https://your-repo-url/path/to/manifest.json"
+          "id": "Kids-On-Brooms",
+          "release": {
+            "version": "${{ env.VERSION }}",
+            "manifest": "https://raw.githubusercontent.com/josmaier/KidsOnBroomsFoundryVTT/2.0.1/system.json",
+            "notes": "https://github.com/josmaier/KidsOnBroomsFoundryVTT/releases/tag/${{ env.COMBINED_VERSION }}",
+            "compatibility": {
+              "minimum": "12.331",
+              "verified": "12.331",
+              "maximum": ""
+            }   
           }
         }'

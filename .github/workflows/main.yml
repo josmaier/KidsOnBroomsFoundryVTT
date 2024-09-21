@@ -15,7 +15,6 @@ jobs:
   release:
     runs-on: ubuntu-latest
 
-    
     # Set up a global environment variable to hold the version
     env:
       VERSION: ${{ github.ref_name != '' && github.ref_type == 'tag' && github.ref_name || github.event.inputs.version }}

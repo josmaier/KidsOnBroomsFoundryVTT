@@ -2,6 +2,7 @@ const gulp = require('gulp');
 const prefix = require('gulp-autoprefixer');
 const sourcemaps = require('gulp-sourcemaps');
 const sass = require('gulp-sass')(require('sass'));
+const zip = require('gulp-zip');
 
 /* ----------------------------------------- */
 /*  Compile Sass
@@ -51,3 +52,28 @@ exports.build = gulp.series(
   compileScss
 );
 exports.css = css;
+
+/* ----------------------------------------- */
+/* Zip Release                  
+/* ----------------------------------------- */
+
+function zipRelease() {
+  return gulp.src([
+    './**/*',
+    '!./node_modules/**',
+    '!./.git/**',
+    '!./.gitignore',
+    '!./gulpfile.js',
+    '!./package-lock.json',
+    '!./package.json',
+    '!./scss/**/*',
+    '!./.github/**/*',
+  ], { base: '.' })
+  .pipe(zip('kids-on-brooms.zip'))
+  .pipe(gulp.dest('.'));
+}
+
+exports.build = gulp.series(
+  compileScss,
+  zipRelease
+);

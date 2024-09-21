@@ -43,11 +43,12 @@ jobs:
         prerelease: false
         files: |
           kids-on-brooms.zip
-
+    
     # Get the release download link from the release response
     - name: Get Release Download URL
-      run: echo "Release URL: ${{ steps.create_release.outputs.upload_url }}"
-    
+      run: | 
+        echo "Release URL: ${{ steps.create_release.outputs.upload_url }}"
+      
     # Update a file (e.g., update a manifest or version file)
     - name: Update manifest file
       run: |

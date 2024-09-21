@@ -1,4 +1,51 @@
 {
     "Actor":{},
-    "Item":{}
+    "Item":{
+        "types":[
+            "broom",
+            "wandCore",
+            "wandWood",
+            "flaw",
+            "strength",
+            "wandCoreEffect",
+            "wandWoodEffect",
+            "broomEffect"
+        ],
+        "broom":{
+            "name":"Broom",
+            "riderDescription": "The rider of the broom.",
+            "mechanicalBenefit": "The mechanical benefit of the broom."
+        },
+        "wandCore":{
+            "name": "Wand Core",
+            "stat": "The stat that the wand core affects."
+        },
+        "wandWood":{
+            "name": "Wand Wood",
+            "stat": "The stat that the wand wood affects."
+        },
+        "flaw":{
+            "name": "Flaw"
+        },
+        "strength": {
+            "name": "Strength",
+            "mechanicalBenefit": "The mechanical benefit of the strength."
+        },
+        "wandCoreEffect": {
+            "name": "Wand Core Effect",
+            "stat": "The stat that the wand core effect affects."
+        },
+        "wandWoodEffect": {
+            "name": "Wand Wood Effect",
+            "stat": "The stat that the wand wood effect affects."
+        },
+        "broomEffect": {
+            "name": "Broom Effect",
+            "stat": "The stat that the broom effect affects.",
+            "strength": {
+                "name": "Strength",
+                "mechanicalBenefit": "The mechanical benefit of the strength."
+            }
+        }
+    }
 }

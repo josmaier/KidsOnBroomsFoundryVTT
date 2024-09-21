@@ -1,0 +1,69 @@
+name: Release Workflow
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # Triggers on version tags like v1.0.0
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+    # Checkout the repository
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # Set up Node.js and install dependencies for SCSS compilation
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+
+    - name: Install dependencies
+      run: npm install
+
+    # Compile SCSS files
+    - name: Compile SCSS
+      run: npm run build:scss  # Modify this according to your build command
+
+    # Create GitHub release
+    - name: Create GitHub Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref_name }}
+        release_name: "Release ${{ github.ref_name }}"
+        draft: false
+        prerelease: false
+        files: |
+          path/to/your/compiled/css/files
+
+    # Get the release download link from the release response
+    - name: Get Release Download URL
+      run: echo "Release URL: ${{ steps.create_release.outputs.upload_url }}"
+    
+    # Update a file (e.g., update a manifest or version file)
+    - name: Update manifest file
+      run: |
+        sed -i 's/"download":.*/"download": "${{ steps.create_release.outputs.html_url }}"/' path/to/manifest.json
+        git config --global user.name 'GitHub Actions'
+        git config --global user.email 'actions@github.com'
+        git add path/to/manifest.json
+        git commit -m "Update manifest with release URL"
+        git push origin main  # Push the change to the main branch
+    
+    # Publish release to Foundry API
+    - name: Publish to Foundry API
+      run: |
+        curl -X POST https://foundryvtt.com/api/packages/release \
+        -H "Authorization: Bearer ${{ secrets.FOUNDRY_API_KEY }}" \
+        -H "Content-Type: application/json" \
+        -d '{
+          "type": "module",
+          "package": {
+            "name": "your-package-name",
+            "manifest": "https://your-repo-url/path/to/manifest.json"
+          }
+        }'

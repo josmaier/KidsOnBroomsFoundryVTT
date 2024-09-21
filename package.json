@@ -1,0 +1,16 @@
+{
+  "name": "kidsonbroomsfoundryvtt",
+  "version": "0.1.0",
+  "description": "The Kids on Brooms System for Foundry VTT",
+  "main": "kidsonbroomsfoundryvtt.js",
+  "scripts": {
+  "sass": "sass --watch scss/kidsOnBrooms.scss css/kidsOnBrooms.css"
+}
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "sass": "^1.79.3"
+  }
+}

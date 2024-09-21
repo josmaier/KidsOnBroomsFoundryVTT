@@ -19,6 +19,6 @@
   },
   "primaryTokenAttribute": "system.adversityTokens",
   "url": "https://github.com/josmaier/KidsOnBroomsFoundryVTT",
-  "manifest": "https://github.com/josmaier/KidsOnBroomsFoundryVTT/blob/2fb5d0a11d1c9d78945c2508d5aa2cc7daf297e0/system.json",
+  "manifest": "https://github.com/josmaier/KidsOnBroomsFoundryVTT/blob/1c09eda6c50756a87ffcbdf27c31b732c3420d7c/system.json",
   "download": "https://github.com/josmaier/KidsOnBroomsFoundryVTT/releases/download/0.0.1/kids-on-brooms.zip"
 }

@@ -2,12 +2,15 @@
     "name": "Kids-On-Brooms",
     "title": "Kids on Brooms",
     "description": "This is a implementation of the Kids on Brooms system in FoundryVTT.",
-    "author": "Joscha Maier",
     "version": "0.1.0",
-    "compatability": {
+    "compatibility": {
         "minimum": 12,
         "verified": 12
     },
+    "authors": [{
+        "name": "Joscha Maier",
+        "url": "https://github.com/josmaier"
+    }],
     "languages": [{
     "lang": "en",
     "name": "English",

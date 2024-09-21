@@ -4,13 +4,16 @@
   "description": "The Kids on Brooms System for Foundry VTT",
   "main": "kidsonbroomsfoundryvtt.js",
   "scripts": {
-  "sass": "sass --watch scss/kidsOnBrooms.scss css/kidsOnBrooms.css"
-}
+    "sass": "sass --watch scss/kidsOnBrooms.scss css/kidsOnBrooms.css"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "gulp": "^5.0.0",
     "sass": "^1.79.3"
+  },
+  "dependencies": {
+    "kidsonbroomsfoundryvtt": "file:"
   }
 }

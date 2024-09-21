@@ -1,0 +1,20 @@
+{
+    "name": "KidsOnBrooms",
+    "title": "Kids on Brooms",
+    "description": "This is a implementation of the Kids on Brooms system in FoundryVTT.",
+    "author": "Joscha Maier",
+    "version": "0.1.0",
+    "compatability": {
+        "minimum": 12,
+        "verified": 12
+    },
+    "languages": [{
+    "lang": "en",
+    "name": "English",
+    "path": "lang/en.json"
+    }],
+    "socket": true,
+    "url": "https://github.com/josmaier/KidsOnBroomsFoundryVTT",
+    "manifest": "https://your/hosted/system/repo/system.json",
+    "download": "https://your/packaged/download/archive.zip"
+}  

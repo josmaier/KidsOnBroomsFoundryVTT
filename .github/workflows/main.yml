@@ -4,21 +4,22 @@ on:
   push:
     tags:
       - 'v*.*.*'  # Triggers on version tags like v1.0.0
-  
-on:
   workflow_dispatch:  # This allows manual triggering
     inputs:
       version:
         description: 'Version for the release (e.g., v1.0.0)'
         required: true
         default: 'v1.0.0'
- # Set up a global environment variable to hold the version
-    env:
-      VERSION: ${{ github.ref_name != '' && github.ref_type == 'tag' && github.ref_name || github.event.inputs.version }}
 
 jobs:
   release:
     runs-on: ubuntu-latest
+
+    
+    # Set up a global environment variable to hold the version
+    env:
+      VERSION: ${{ github.ref_name != '' && github.ref_type == 'tag' && github.ref_name || github.event.inputs.version }}
+
     steps:
     # Checkout the repository
     - name: Checkout repository

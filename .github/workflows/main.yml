@@ -1,10 +1,7 @@
 name: Release Workflow
 #I hate this, why does it not work, what is going on
 on:
-  push:
-    tags:
-      - 'v*.*.*'  # Triggers on version tags like v1.0.0
-  workflow_dispatch:  # This allows manual triggering
+  workflow_dispatch:
     inputs:
       version:
         description: 'Version for the release (e.g., v1.0.0)'
